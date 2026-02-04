@@ -97,9 +97,11 @@ public class GetCommand extends Command {
         }
 
         if (result instanceof javax.management.openmbean.CompositeDataSupport) {
-          result =
-              ((javax.management.openmbean.CompositeDataSupport) result)
-                  .get(attributeNameElements[1]);
+          if (attributeNameElements.length > 1) {
+            result =
+                ((javax.management.openmbean.CompositeDataSupport) result)
+                    .get(attributeNameElements[1]);
+          }
         }
 
         if (simpleFormat) {
