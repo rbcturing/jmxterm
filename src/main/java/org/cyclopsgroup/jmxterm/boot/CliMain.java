@@ -104,7 +104,7 @@ public class CliMain {
         }
       } else {
         File inputFile = new File(options.getInput());
-        if (!inputFile.isFile()) {
+        if (!inputFile.getCanonicalFile().isFile()) {
           throw new FileNotFoundException("File " + inputFile + " is not a valid file");
         }
         input = new FileCommandInput(new File(options.getInput()));

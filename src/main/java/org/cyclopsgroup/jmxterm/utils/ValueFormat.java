@@ -31,7 +31,9 @@ public class ValueFormat {
       return null;
     }
     String s;
-    if (value.charAt(0) == '\"' && value.charAt(value.length() - 1) == '\"') {
+    if (value.length() >= 2 && value.charAt(0) == '\"' && value.charAt(value.length() - 1) == '\"') {
+      s = value.substring(1, value.length() - 1);
+    } else if (value.length() >= 2 && value.charAt(0) == '\'' && value.charAt(value.length() - 1) == '\'') {
       s = value.substring(1, value.length() - 1);
     } else {
       s = value;

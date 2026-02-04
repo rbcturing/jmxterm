@@ -252,7 +252,7 @@ public class InfoCommand extends Command {
           "Types(a|o|u) to display, for example aon for all attributes, operations and notifications")
   public void setType(String type) {
     Validate.isTrue(StringUtils.isNotEmpty(type), "Type can't be NULL");
-    Validate.isTrue(Pattern.matches("^a?o?n?$", type), "Type must be a?|o?|n?");
+    Validate.isTrue(Pattern.matches("^a?o?n?$", type), "Type must be a?|o?|u?");
     this.type = type;
   }
 

