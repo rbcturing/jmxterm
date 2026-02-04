@@ -37,7 +37,6 @@ public class OptionCommand extends Command {
   public void execute() {
     Session session = getSession();
     if (verboseLevel == null) {
-      session.setVerboseLevel(VerboseLevel.BRIEF);
       session.output.printMessage("no change for verbose, verbose = " + session.getVerboseLevel());
     } else {
       VerboseLevel v = VerboseLevel.valueOf(verboseLevel.toUpperCase());
