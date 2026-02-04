@@ -35,8 +35,12 @@ public class FileCommandOutput extends CommandOutput {
 
   @Override
   public void close() {
-    fileWriter.flush();
-    fileWriter.close();
+    try {
+      fileWriter.flush();
+      fileWriter.close();
+    } catch (Exception e) {
+      // ignore close failures
+    }
   }
 
   @Override

