@@ -1,0 +1,32 @@
+# Exclude these when building the zip for reviewers (no hints, code only).
+# Use with zip -x or similar so the reviewer gets only the codebase.
+
+# Do not include bug descriptions or proposal
+proposal.md
+review_config.json
+
+# macOS
+.DS_Store
+__MACOSX
+.AppleDouble
+.LSOverride
+
+# IDE / editor
+.idea/
+.vscode/
+*.iml
+*.swp
+*~
+
+# Git
+.git/
+.gitignore
+
+# Build / dependencies (optional: include if you want source-only)
+target/
+*.class
+
+# Other docs that might hint (optional)
+doc/
+readme.md
+LICENSE
