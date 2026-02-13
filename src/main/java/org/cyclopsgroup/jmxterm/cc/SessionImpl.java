@@ -44,7 +44,11 @@ class SessionImpl extends Session {
     if (connection == null) {
       return;
     }
-    connection = null;
+    try {
+      connection.close();
+    } finally {
+      connection = null;
+    }
   }
 
   /**

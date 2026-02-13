@@ -148,7 +148,15 @@ public class WatchCommand extends Command {
           stopAfter,
           TimeUnit.SECONDS);
     }
-    if (!report) {
+    if (report && stopAfter > 0) {
+      executor.shutdown();
+      try {
+        executor.awaitTermination(stopAfter + 10, TimeUnit.SECONDS);
+      } catch (InterruptedException e) {
+        Thread.currentThread().interrupt();
+        throw new IOException("Interrupted while waiting for watch to finish", e);
+      }
+    } else if (!report) {
       System.in.read();
       System.out.println();
       executor.shutdownNow();

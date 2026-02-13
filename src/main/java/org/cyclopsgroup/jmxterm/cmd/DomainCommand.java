@@ -32,7 +32,7 @@ public class DomainCommand extends Command {
    */
   static String getDomainName(String domain, Session session) throws IOException {
     Validate.notNull(session, "Session can't be NULL");
-    Validate.isTrue(session.getConnection() != null, "Session isn't opened");
+    Validate.isTrue(session.isConnected(), "Session isn't opened");
     if (domain == null) {
       return session.getDomain();
     }

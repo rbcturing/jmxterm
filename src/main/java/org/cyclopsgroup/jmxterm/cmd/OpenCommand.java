@@ -38,11 +38,11 @@ public class OpenCommand extends Command {
   public void execute() throws IOException {
     Session session = getSession();
     if (url == null) {
-      Connection con = session.getConnection();
-      if (con == null) {
+      if (!session.isConnected()) {
         session.output.printMessage("not connected");
         session.output.println(SyntaxUtils.NULL);
       } else {
+        Connection con = session.getConnection();
         session.output.println(String.format("%s,%s", con.getConnectorId(), con.getUrl()));
       }
       return;
