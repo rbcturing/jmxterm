@@ -1,0 +1,40 @@
+{
+  "upload_directory": "/tmp/files/",
+  "output_directory": "/tmp/outputs/",
+  "system_prompt": "You are an expert code reviewer. Analyze the provided codebase for bugs, security issues, and correctness problems. Provide actionable feedback. All files are located in /tmp/files",
+  "task_prompt": "You are an expert code reviewer. Your task is to analyze the jmxterm codebase. jmxterm is a command-line JMX client that connects to MBean servers, runs commands (open, close, get, set, run, beans, domain, etc.), and handles file/stream I/O, session state, and JDK-specific process discovery. The codebase handles command parsing and chaining, JMX connection lifecycle, MBean attribute and operation invocation, notification subscription, and URL resolution (host:port and PID). Your goal is to identify bugs, correctness issues, boundary condition errors, logic errors, off-by-one mistakes, missing validation checks, resource leaks, and any other issues that could affect reliability or correctness. Focus on: control flow in command chaining and short-circuit behavior, connection and session lifecycle (connect/disconnect/close), null checks and guards before API calls, use of getConnection() vs isConnected() when checking session state, executor and scheduler lifecycle in watch/report mode, exception handling in close() and flush(), and regex patterns for URL/host parsing. Write your findings to /tmp/outputs/review.md",
+  "rubric": [
+    {
+      "criterion": "Identifies that BeansCommand.getBeans() (cmd/BeansCommand.java) calls session.getConnection() without checking session.isConnected() first, so when not connected it throws IllegalStateException instead of a user-friendly message.",
+      "weight": 1
+    },
+    {
+      "criterion": "Identifies that GetCommand.displayAttributes() (cmd/GetCommand.java) calls new ObjectName(beanName) after BeanCommand.getBeanName() without guarding against null beanName, which can throw when bean resolves to null (e.g. isNull(bean)).",
+      "weight": 1
+    },
+    {
+      "criterion": "Identifies that WatchCommand.execute() (cmd/WatchCommand.java) uses the typos \"sepcified\" and \"specificed\" instead of \"specified\" in the IllegalArgumentException message when --report is used without --stopafter.",
+      "weight": 1
+    },
+    {
+      "criterion": "Identifies that CommandCenter.doExecute(String) (cc/CommandCenter.java) truncates at # using command.split(ESCAPE_CHAR_REGEX)[0] without a limit; it should use split(ESCAPE_CHAR_REGEX, 2)[0] so only the first # splits, otherwise multiple # can yield wrong command or comment in the command.",
+      "weight": 1
+    },
+    {
+      "criterion": "Identifies that Command.suggestArgument(String partialArg) (Command.java) inverts the condition: it returns null when partialArg != null and only calls doSuggestArgument() when partialArg == null, so tab-completion suggestions are never shown when the user has typed a partial argument.",
+      "weight": 1
+    },
+    {
+      "criterion": "Identifies that SyntaxUtils.getUrl() (SyntaxUtils.java) uses PATTERN_HOST_PORT which does not match IPv6 literals (e.g. [::1]:9991), so such URLs are passed to the JMXServiceURL constructor and can fail or be misparsed instead of being built as rmi URLs.",
+      "weight": 1
+    },
+    {
+      "criterion": "Identifies that ConfigurationUtils.loadFromOverlappingResources() (utils/ConfigurationUtils.java) never closes the InputStream from openStream(); only the Reader is closed in finally, causing an InputStream resource leak when loading multiple property files.",
+      "weight": 1
+    },
+    {
+      "criterion": "Identifies that SubscribeCommand (cmd/SubscribeCommand.java) keeps notification listeners in a static map and registers them with MBeanServerConnection but does not remove them on session disconnect/close, so notifications can still fire with stale session reference or NPE.",
+      "weight": 1
+    }
+  ]
+}

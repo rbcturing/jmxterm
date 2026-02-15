@@ -93,7 +93,7 @@ public class ValueOutputFormat {
     } else if (value.getClass().isArray()) {
       int length = Array.getLength(value);
       output.print("[ ");
-      for (int i = 0; i <= length; i++) {
+      for (int i = 0; i < length; i++) {
         if (i != 0) {
           output.print(", ");
         }
