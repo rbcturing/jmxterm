@@ -103,11 +103,11 @@ public class CliMain {
           input = new JlineCommandInput(consoleReader, COMMAND_PROMPT);
         }
       } else {
-        File inputFile = new File(options.getInput());
-        if (!inputFile.getCanonicalFile().isFile()) {
+        File inputFile = new File(options.getInput()).getCanonicalFile();
+        if (!inputFile.isFile()) {
           throw new FileNotFoundException("File " + inputFile + " is not a valid file");
         }
-        input = new FileCommandInput(new File(options.getInput()));
+        input = new FileCommandInput(inputFile);
       }
       try {
         CommandCenter commandCenter = new CommandCenter(output, input);
