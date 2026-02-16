@@ -5,35 +5,35 @@
   "task_prompt": "You are an expert code reviewer. Your task is to analyze the jmxterm codebase. jmxterm is a command-line JMX client that connects to MBean servers, runs commands (open, close, get, set, run, beans, domain, etc.), and handles file/stream I/O, session state, and JDK-specific process discovery. The codebase handles command parsing and chaining, JMX connection lifecycle, MBean attribute and operation invocation, notification subscription, and URL resolution (host:port and PID). Your goal is to identify bugs, correctness issues, boundary condition errors, logic errors, off-by-one mistakes, missing validation checks, resource leaks, and any other issues that could affect reliability or correctness. Focus on: control flow in command chaining and short-circuit behavior, connection and session lifecycle (connect/disconnect/close), null checks and guards before API calls, use of getConnection() vs isConnected() when checking session state, executor and scheduler lifecycle in watch/report mode, exception handling in close() and flush(), and regex patterns for URL/host parsing. Write your findings to /tmp/outputs/review.md",
   "rubric": [
     {
-      "criterion": "Identifies that BeansCommand.getBeans() (cmd/BeansCommand.java) calls session.getConnection() without checking session.isConnected() first, so when not connected it throws IllegalStateException instead of a user-friendly message.",
+      "criterion": "Identifies that in BeansCommand.getBeans() in src/main/java/org/cyclopsgroup/jmxterm/cmd/BeansCommand.java the code calls session.getConnection() without first checking session.isConnected(), so when the session is not connected it throws IllegalStateException instead of a user-friendly message.",
       "weight": 1
     },
     {
-      "criterion": "Identifies that GetCommand.displayAttributes() (cmd/GetCommand.java) calls new ObjectName(beanName) after BeanCommand.getBeanName() without guarding against null beanName, which can throw when bean resolves to null (e.g. isNull(bean)).",
+      "criterion": "Identifies that in GetCommand.displayAttributes() in src/main/java/org/cyclopsgroup/jmxterm/cmd/GetCommand.java the code calls new ObjectName(beanName) after BeanCommand.getBeanName() without guarding against null beanName, which can throw when bean resolves to null (e.g. isNull(bean)).",
       "weight": 1
     },
     {
-      "criterion": "Identifies that WatchCommand.execute() (cmd/WatchCommand.java) uses the typos \"sepcified\" and \"specificed\" instead of \"specified\" in the IllegalArgumentException message when --report is used without --stopafter.",
+      "criterion": "Identifies that in WatchCommand.execute() in src/main/java/org/cyclopsgroup/jmxterm/cmd/WatchCommand.java the IllegalArgumentException message when --report is used without --stopafter contains the typos \"sepcified\" and \"specificed\" instead of \"specified\".",
       "weight": 1
     },
     {
-      "criterion": "Identifies that CommandCenter.doExecute(String) (cc/CommandCenter.java) truncates at # using command.split(ESCAPE_CHAR_REGEX)[0] without a limit; it should use split(ESCAPE_CHAR_REGEX, 2)[0] so only the first # splits, otherwise multiple # can yield wrong command or comment in the command.",
+      "criterion": "Identifies that in CommandCenter.doExecute(String) in src/main/java/org/cyclopsgroup/jmxterm/cc/CommandCenter.java when truncating at the comment character (#) the code uses command.split(ESCAPE_CHAR_REGEX)[0] without a limit parameter; it should use split(ESCAPE_CHAR_REGEX, 2)[0] so that only the first unescaped # splits the line, otherwise lines with multiple # can yield the wrong command part or comment text.",
       "weight": 1
     },
     {
-      "criterion": "Identifies that Command.suggestArgument(String partialArg) (Command.java) inverts the condition: it returns null when partialArg != null and only calls doSuggestArgument() when partialArg == null, so tab-completion suggestions are never shown when the user has typed a partial argument.",
+      "criterion": "Identifies that in Command.suggestArgument(String partialArg) in src/main/java/org/cyclopsgroup/jmxterm/Command.java the condition is inverted: the code returns null when partialArg != null and only calls doSuggestArgument() when partialArg == null, so tab-completion suggestions are never shown when the user has typed a partial argument to complete.",
       "weight": 1
     },
     {
-      "criterion": "Identifies that SyntaxUtils.getUrl() (SyntaxUtils.java) uses PATTERN_HOST_PORT which does not match IPv6 literals (e.g. [::1]:9991), so such URLs are passed to the JMXServiceURL constructor and can fail or be misparsed instead of being built as rmi URLs.",
+      "criterion": "Identifies that in SyntaxUtils.getUrl() in src/main/java/org/cyclopsgroup/jmxterm/SyntaxUtils.java the PATTERN_HOST_PORT regex does not match IPv6 literals (e.g. [::1]:9991), so such URLs fall through to the JMXServiceURL constructor and can fail or be misparsed instead of being built as rmi URLs.",
       "weight": 1
     },
     {
-      "criterion": "Identifies that ConfigurationUtils.loadFromOverlappingResources() (utils/ConfigurationUtils.java) never closes the InputStream from openStream(); only the Reader is closed in finally, causing an InputStream resource leak when loading multiple property files.",
+      "criterion": "Identifies that in ConfigurationUtils.loadFromOverlappingResources() in src/main/java/org/cyclopsgroup/jmxterm/utils/ConfigurationUtils.java the InputStream from resources.nextElement().openStream() is never closed; only the Reader is closed in finally, causing an InputStream resource leak when loading multiple property files.",
       "weight": 1
     },
     {
-      "criterion": "Identifies that SubscribeCommand (cmd/SubscribeCommand.java) keeps notification listeners in a static map and registers them with MBeanServerConnection but does not remove them on session disconnect/close, so notifications can still fire with stale session reference or NPE.",
+      "criterion": "Identifies that SubscribeCommand in src/main/java/org/cyclopsgroup/jmxterm/cmd/SubscribeCommand.java keeps notification listeners in a static map and registers them with MBeanServerConnection but does not remove them when the session disconnects or closes (SessionImpl.disconnect()), so notifications can still fire and use a stale session reference or NPE.",
       "weight": 1
     }
   ]
