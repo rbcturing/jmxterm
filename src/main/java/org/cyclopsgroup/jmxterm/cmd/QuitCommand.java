@@ -15,8 +15,8 @@ public class QuitCommand extends Command {
   @Override
   public void execute() throws IOException {
     Session session = getSession();
+    session.output.printMessage("bye");
     session.disconnect();
     session.close();
-    session.output.printMessage("bye");
   }
 }

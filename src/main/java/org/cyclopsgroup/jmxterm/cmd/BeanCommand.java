@@ -55,7 +55,9 @@ public class BeanCommand extends Command {
         con.getMBeanInfo(name);
         return bean;
       } catch (MalformedObjectNameException e) {
+        // fall through to domain + bean
       } catch (InstanceNotFoundException e) {
+        throw new IllegalArgumentException("Bean name " + bean + " isn't valid");
       }
     }
 

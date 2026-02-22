@@ -67,10 +67,13 @@ public class SetCommand extends Command {
     String attributeName = arguments.get(0);
 
     String beanName = BeanCommand.getBeanName(bean, domain, session);
+    if (beanName == null) {
+      throw new IllegalArgumentException("No bean selected; set bean using bean command or -b option");
+    }
     ObjectName name = new ObjectName(beanName);
 
     MBeanServerConnection con = session.getConnection().getServerConnection();
-    MBeanInfo beanInfo = con.getMBeanInfo(new ObjectName(beanName));
+    MBeanInfo beanInfo = con.getMBeanInfo(name);
     MBeanAttributeInfo attributeInfo = null;
     for (MBeanAttributeInfo i : beanInfo.getAttributes()) {
       if (i.getName().equals(attributeName)) {

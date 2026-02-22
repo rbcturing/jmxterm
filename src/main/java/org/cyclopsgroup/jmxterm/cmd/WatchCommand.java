@@ -102,7 +102,7 @@ public class WatchCommand extends Command {
   public void execute() throws IOException, JMException {
     if (report && stopAfter == 0) {
       throw new IllegalArgumentException(
-          "When --report is sepcified, --stopafter(-s) must be specificed");
+          "When --report is specified, --stopafter(-s) must be specified");
     }
     Session session = getSession();
     String domain = DomainCommand.getDomainName(null, session);
